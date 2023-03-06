@@ -1,4 +1,6 @@
 import Header from "./Header.js";
+import Register from "./Register.js";
+import Login from "./Login.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
 import PopupWithForm from "./PopupWithForm.js";
@@ -7,14 +9,17 @@ import EditAvatarPopup from "./EditAvatarPopup.js";
 import AddPlacePopup from "./AddPlacePopup.js";
 import ImagePopup from "./ImagePopup.js";
 import api from "../utils/api.js";
+import ProtectedRoute from "./ProtectedRoute.js";
 import {
   CurrentUserContext,
   defaultUser,
 } from "../contexts/CurrentUserContext.js";
 
 import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
@@ -164,15 +169,30 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
-      <Main
-        cards={cards}
-        onEditProfile={handleEditProfileClick}
-        onAddPlace={handleAddPlaceClick}
-        onEditAvatar={handleEditAvatarClick}
-        handleCardClick={handleCardClick}
-        handleLikeClick={handleLikeClick}
-        handleCardDelete={handleCardDelete}
-      />
+
+      <Routes>
+        
+        <Route path="/sign-up" element={<Register />} />
+        <Route path="/sign-in" element={<Login />} />
+
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute
+              element={Main}
+              loggedIn = {loggedIn}
+              cards={cards}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onEditAvatar={handleEditAvatarClick}
+              handleCardClick={handleCardClick}
+              handleLikeClick={handleLikeClick}
+              handleCardDelete={handleCardDelete}
+            />
+          }
+        />
+
+      </Routes>
 
       <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
