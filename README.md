@@ -1,7 +1,35 @@
-# Здесь будет ваш проект на Реакте с авторизацией и регистрацией
+# Mesto web page
 
-Используйте ваши предыдущие наработки по проекту Mesto. Это может быть работа 11-го спринта или его улучшенная версия после 2-х последних спринтов. 
+## Description
 
-Все запросы на авторизацию, регистрацию и проверку токена должны работать через сервис `https://auth.nomoreparties.co`. Остальные запросы, не относящиеся к этой проектной работе могут быть к бэкенду из предыдущих спринтов.
+The project gives practice in React.js, API and Asynchronous programming. It talks in pictures about beautiful places you may travel.
 
-Успехов!
+[Click to view site on GitHub Pages](https://timurgain.github.io/mesto-react/)
+
+## Technologies
+
+- React.js, JavaScript;
+- API, Asynchronous programming;
+- HTML5 and semantic tags;
+- CSS3 and grid layout, flexbox, adaptive, @media, @font-face;
+- Block Element Modifier methodology,
+- Webpack module bundler.
+
+## Installation and launch
+
+Check if Node.js and npm are installed
+```
+node --version
+```
+
+Clone repository and navigate to folder on command line:
+```
+git clone ...
+```
+
+```
+cd mesto-react
+```
+
+```
+npm run start
