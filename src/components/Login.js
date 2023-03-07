@@ -1,6 +1,9 @@
+import AuthForm from "./AuthForm";
+
+
 function Login() {
   return (
-    <p>Login here</p>
+    <AuthForm headerText="Вход" btnText="Войти" />
   )
 }
 

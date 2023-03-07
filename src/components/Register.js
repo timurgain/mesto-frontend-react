@@ -1,8 +1,12 @@
+import AuthForm from "./AuthForm";
+
 function Register() {
   return (
-    <p>Register here</p>
-  )
+    <>
+      <AuthForm headerText="Регистрация" btnText="Зарегистрироваться" />
+      <p className="auth__footnote">Уже зарегистрированы? Войти</p>
+    </>
+  );
 }
 
-
-export default Register
+export default Register;
