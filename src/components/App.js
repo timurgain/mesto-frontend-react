@@ -15,11 +15,13 @@ import {
   defaultUser,
 } from "../contexts/CurrentUserContext.js";
 
+import usePopupClosing from "../hooks/usePopupClosing";
+
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(true);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
@@ -31,6 +33,16 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState(defaultUser);
   const [cards, setCards] = React.useState([]);
 
+  const isPopupOpen =
+    isEditProfilePopupOpen ||
+    isAddPlacePopupOpen ||
+    isEditAvatarPopupOpen ||
+    isConfirmPopupOpen ||
+    isImagePopupOpen;
+
+  const { escClose, clickClose } = usePopupClosing(isPopupOpen, closeAllPopups)
+  React.useEffect(escClose, [isPopupOpen, escClose]);
+
   React.useEffect(() => {
     Promise.all([api.getUserMe(), api.getCards()])
       .then(([userData, cardsData]) => {
@@ -40,35 +52,13 @@ function App() {
       .catch(reportError);
   }, []);
 
-  const isPopupOpen =
-    isEditProfilePopupOpen ||
-    isAddPlacePopupOpen ||
-    isEditAvatarPopupOpen ||
-    isConfirmPopupOpen ||
-    isImagePopupOpen;
-
-  React.useEffect(() => {
-    function handleEscClose(evt) {
-      if (evt.key === "Escape") {
-        closeAllPopups();
-      }
-    }
-
-    if (isPopupOpen) {
-      document.addEventListener("keydown", handleEscClose);
-    }
-    return () => {
-      document.removeEventListener("keydown", handleEscClose);
-    };
-  }, [isPopupOpen]);
-
-  function handleClickClose(evt) {
-    const isClosing = ["popup", "popup__close-btn"].some((cls) =>
-      Array.from(evt.target.classList).includes(cls)
-    );
-    if (isClosing) {
-      closeAllPopups();
-    }
+  function closeAllPopups() {
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+    setIsImagePopupOpen(false);
+    setIsConfirmPopupOpen(false);
+    setSelectedCard(null);
   }
 
   function handleEditAvatarClick() {
@@ -157,21 +147,12 @@ function App() {
       .catch(reportError);
   }
 
-  function closeAllPopups() {
-    setIsEditProfilePopupOpen(false);
-    setIsAddPlacePopupOpen(false);
-    setIsEditAvatarPopupOpen(false);
-    setIsImagePopupOpen(false);
-    setIsConfirmPopupOpen(false);
-    setSelectedCard(null);
-  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
 
       <Routes>
-
         <Route path="/sign-up" element={<Register />} />
         <Route path="/sign-in" element={<Login />} />
 
@@ -180,7 +161,7 @@ function App() {
           element={
             <ProtectedRoute
               element={Main}
-              loggedIn = {loggedIn}
+              loggedIn={loggedIn}
               cards={cards}
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}
@@ -191,31 +172,30 @@ function App() {
             />
           }
         />
-
       </Routes>
 
       <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
         onUpdateUser={handleUpdateUser}
-        onClose={handleClickClose}
+        onClose={clickClose}
       />
 
       <EditAvatarPopup
         isOpen={isEditAvatarPopupOpen}
         onUpdateAvatar={handleUpdateAvatar}
-        onClose={handleClickClose}
+        onClose={clickClose}
       />
 
       <AddPlacePopup
         isOpen={isAddPlacePopupOpen}
         onAddPlace={handleAddPlaceSubmit}
-        onClose={handleClickClose}
+        onClose={clickClose}
       />
 
       <ImagePopup
         isOpen={isImagePopupOpen}
         card={selectedCard}
-        onClose={handleClickClose}
+        onClose={clickClose}
       />
 
       {/* popup confirm a card deletion */}
@@ -226,7 +206,7 @@ function App() {
         isOpen={isConfirmPopupOpen}
         onSubmit={handleConfirmCardDelete}
         isValid={true}
-        onClose={handleClickClose}
+        onClose={clickClose}
       />
 
       <Footer />

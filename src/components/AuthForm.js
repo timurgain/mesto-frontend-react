@@ -35,7 +35,7 @@ function AuthForm({ headerText, btnText, ...props }) {
             aria-label="password input"
             name="password"
             type="password"
-            minlength="8"
+            minLength="8"
             placeholder="Пароль"
             required
             value={values.password}
