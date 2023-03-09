@@ -10,7 +10,6 @@ function InfoTooltip({ isOpen, isSuccessful, onClose, ...props }) {
 
   React.useEffect(() => {
     if (isSuccessful && !isOpen) {
-      console.log('redirect ...')
       navigate('/sign-in', {replace: true});
     }
   }, [isOpen, isSuccessful, navigate])

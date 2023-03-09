@@ -1,7 +1,6 @@
 import React from "react";
 import useFormAndValidation from "../hooks/useFormAndValidation.js";
 
-const BASE_AUTH_URL = "https://auth.nomoreparties.co";
 
 function AuthForm({ headerText, btnText, onSubmit, ...props }) {
   const { values, errors, isValid, handleChange, resetForm } =
@@ -11,7 +10,7 @@ function AuthForm({ headerText, btnText, onSubmit, ...props }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onSubmit(BASE_AUTH_URL, values.email, values.password);
+    onSubmit(values.email, values.password);
   }
 
   return (
