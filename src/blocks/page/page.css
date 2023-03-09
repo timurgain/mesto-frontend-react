@@ -1,4 +1,6 @@
 .page {
+  display: flex;
+  flex-direction: column;
   background-color: #000;
   margin: 0 auto;
   padding: 45px 0 60px;

@@ -1,20 +1,28 @@
 import React from "react";
 import useFormAndValidation from "../hooks/useFormAndValidation.js";
 
-function AuthForm({ headerText, btnText, ...props }) {
+const BASE_AUTH_URL = "https://auth.nomoreparties.co";
 
-  const {
-    values,
-    errors,
-    isValid,
-    handleChange,
-    resetForm,
-  } = useFormAndValidation({}, {}, false);
+function AuthForm({ headerText, btnText, onSubmit, ...props }) {
+  const { values, errors, isValid, handleChange, resetForm } =
+    useFormAndValidation({email: "", password: ""}, {}, false);
+
+  React.useEffect(() => resetForm({email: "", password: ""}), [resetForm])
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    onSubmit(BASE_AUTH_URL, values.email, values.password);
+  }
 
   return (
     <div className="auth">
       <h2 className="auth__header">{headerText}</h2>
-      <form className="auth__form" onSubmit={resetForm} method="POST" noValidate>
+      <form
+        className="auth__form"
+        onSubmit={handleSubmit}
+        method="POST"
+        noValidate
+      >
         <div className="auth__feild">
           <input
             className="auth__input"
