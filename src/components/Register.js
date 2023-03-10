@@ -3,6 +3,7 @@ import AuthForm from "./AuthForm";
 import InfoTooltip from "./InfoTooltip";
 import usePopupClosing from "../hooks/usePopupClosing";
 import * as auth from "./AuthUtils";
+import { Link } from "react-router-dom";
 
 function Register() {
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
@@ -13,7 +14,8 @@ function Register() {
   React.useEffect(escClose, [isPopupOpen, escClose]);
 
   function handleRegister(email, password) {
-    auth.register(email, password)
+    auth
+      .register(email, password)
       .then(() => {
         setIsSuccessful(true);
         setIsPopupOpen(true);
@@ -32,7 +34,9 @@ function Register() {
         btnText="Зарегистрироваться"
         onSubmit={handleRegister}
       />
-      <p className="auth__footnote">Уже зарегистрированы? Войти</p>
+      <p className="auth__footnote">
+        Уже зарегистрированы? <Link to="/sign-in">Войти</Link>
+      </p>
       <InfoTooltip
         isOpen={isPopupOpen}
         isSuccessful={isSuccessful}

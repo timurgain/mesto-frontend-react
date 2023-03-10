@@ -19,7 +19,6 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, ...props }) {
   function handleSubmit(evt) {
     evt.preventDefault();
     setSaveBtnText("Сохраняю...");
-    console.log(values);
     // forwards the data
     onUpdateUser(values);
   }

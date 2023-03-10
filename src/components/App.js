@@ -173,7 +173,6 @@ function App() {
   }
 
   function handleLogout() {
-    console.log('handleLogout')
     localStorage.removeItem('token');
     setLoggedIn(false);
     navigate('/sign-in', {replace: true});

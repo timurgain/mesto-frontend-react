@@ -14,7 +14,6 @@ function register(email, password) {
 
   return fetch(`${BASE_AUTH_URL}/signup`, options)
     .then((response) => {
-      console.log(response);
       if (!response.ok) {
         return response.text().then((text) => {
           throw new Error(text);
