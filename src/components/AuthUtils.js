@@ -47,16 +47,14 @@ function login(email, password) {
     })
 }
 
-function authorize() {
-  const jwt = localStorage.getItem('jwt');
+function authorize(token) {
   const options = {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-type": "application/json; charset=UTF-8",
-      "Authorization" : `Bearer ${jwt}`
+      "Authorization" : `Bearer ${token}`
     }
   }
-
   return fetch(`${BASE_AUTH_URL}/users/me`, options)
     .then((response) => {
       if (!response.ok) {
@@ -66,12 +64,6 @@ function authorize() {
       }
       return response.json();
     })
-    // .then((data) => {
-
-    //   console.log(data);
-
-    // })
-    // .catch(reportError);
 }
 
 
