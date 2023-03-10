@@ -172,30 +172,39 @@ function App() {
     setLoggedIn(true);
   }
 
+  function handleLogout() {
+    console.log('handleLogout')
+    localStorage.removeItem('token');
+    setLoggedIn(false);
+    navigate('/sign-in', {replace: true});
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <AuthUserContext.Provider value={{ loggedIn, authUser }}>
-        <Header />
+        <Header onLogout={handleLogout} />
 
         <Routes>
+
           <Route path="/sign-up" element={<Register />} />
           <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
+          <Route element={<ProtectedRoute />}>
+            <Route
+              path="/"
+              element={
+                <Main
+                  cards={cards}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  handleCardClick={handleCardClick}
+                  handleLikeClick={handleLikeClick}
+                  handleCardDelete={handleCardDelete}
+                />
+              }
+            />
+          </Route>
 
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute
-                element={Main}
-                cards={cards}
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onEditAvatar={handleEditAvatarClick}
-                handleCardClick={handleCardClick}
-                handleLikeClick={handleLikeClick}
-                handleCardDelete={handleCardDelete}
-              />
-            }
-          />
         </Routes>
 
         <EditProfilePopup
