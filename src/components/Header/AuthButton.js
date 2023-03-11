@@ -11,7 +11,7 @@ function AuthButton({isMobile, onLogout, ...props}) {
   return (  // returns only one button
     <>
 
-      {pathname === "/" && loggedIn && !isMobile && (
+      {pathname === "/" && loggedIn && (
         <button
           className="header__auth-btn link"
           type="button"

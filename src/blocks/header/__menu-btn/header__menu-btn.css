@@ -5,19 +5,13 @@
   outline: none;
   border: none;
   background-color: black;
-  background-image: url(../../../images/menu_line_icon.svg);
-  background-size: 24px 8px;
-  background-repeat: space;
   background-position: initial;
   opacity: 1;
   transition: opacity .2s linear;
+  transition: background-image .1s linear;
 }
 
 .header__menu-btn:hover {
   opacity: .6;
   cursor: pointer;
-}
-
-.header__menu-btn:focus {
-  opacity: .6;
 }
