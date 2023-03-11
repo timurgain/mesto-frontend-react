@@ -1,4 +1,4 @@
-import Header from "./Header.js";
+import Header from "./Header/Header.js";
 import Register from "./Register.js";
 import Login from "./Login.js";
 import Main from "./Main.js";
@@ -35,7 +35,7 @@ function App() {
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState(defaultUser);
-  const [authUser, setAuthUser] = React.useState({ email: "none" });
+  const [authUser, setAuthUser] = React.useState({ email: "" });
   const [cards, setCards] = React.useState([]);
 
   const isPopupOpen =
@@ -175,6 +175,7 @@ function App() {
   function handleLogout() {
     localStorage.removeItem('token');
     setLoggedIn(false);
+    setAuthUser({ email: "" });
     navigate('/sign-in', {replace: true});
   }
 
