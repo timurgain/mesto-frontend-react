@@ -1,6 +1,4 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import AuthUserContext from "../../contexts/AuthUserContext.js";
 import hamburgerMenuPath from "../../images/menu_line_icon.svg";
 import closeMenuPath from "../../images/popup__close-button.svg";
 

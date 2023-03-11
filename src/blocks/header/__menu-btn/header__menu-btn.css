@@ -7,8 +7,7 @@
   background-color: black;
   background-position: initial;
   opacity: 1;
-  transition: opacity .2s linear;
-  transition: background-image .1s linear;
+  transition: opacity .2s linear, background-image .1s linear;
 }
 
 .header__menu-btn:hover {

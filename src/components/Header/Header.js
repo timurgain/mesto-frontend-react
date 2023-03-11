@@ -1,17 +1,16 @@
 import React from "react";
 import AuthUserContext from "../../contexts/AuthUserContext.js";
-import AuthButton from "./AuthButton.js";
 import MenuButton from "./MenuButton.js";
-import logoPath from "../../images/logo-mesto.svg";
-import { useLocation, useNavigate } from "react-router-dom";
+import Logo from "./Logo.js";
+import Menu from "./Menu.js";
+import { useLocation } from "react-router-dom";
 
 const MOBILE_WIDTH_FROM = 767;
 
 function Header({ onLogout, ...props }) {
-  const { loggedIn, authUser } = React.useContext(AuthUserContext);
+  const { loggedIn } = React.useContext(AuthUserContext);
 
   const location = useLocation();
-  const navigate = useNavigate();
   const [isMobile, setIsMobile] = React.useState(false);
   const [isMenuOpened, setIsMenuOpened] = React.useState(false);
 
@@ -29,53 +28,57 @@ function Header({ onLogout, ...props }) {
   }, []);
 
   React.useEffect(() => {
-    setIsMenuOpened(false)
-  }, [isMobile, location])
+    setIsMenuOpened(false);
+  }, [isMobile, location]);
 
   function handleMenuBtnClick() {
     setIsMenuOpened(!isMenuOpened);
   }
 
   return (
-    <>
+    <header className={`header ${isMenuOpened && "header_type_mobile-menu"}`}>
+
       {isMenuOpened && (
-        <div className="header__menu header__menu_type_mobile">
-          {loggedIn && <span className="header__auth-email">{authUser.email}</span>}
-          <AuthButton isMobile={isMobile} onLogout={onLogout} />
-        </div>
+        <Menu
+          isMobile={isMobile}
+          isMenuOpened={isMenuOpened}
+          onLogout={onLogout}
+        />
       )}
 
-      <header className="header">
-        {isMobile && (
-          <>
-            <img
-              className="header__logo"
-              src={logoPath}
-              alt="Логотип Место Россия"
-            />
+      {isMobile && loggedIn && (
+        <>
+          <Logo />
+          <MenuButton
+            isMenuOpened={isMenuOpened}
+            onClick={handleMenuBtnClick}
+          />
+        </>
+      )}
 
-            <MenuButton
-              isMenuOpened={isMenuOpened}
-              onClick={handleMenuBtnClick}
-            />
-          </>
-        )}
+      {isMobile && !loggedIn && (
+        <>
+          <Logo />
+          <Menu
+            isMobile={isMobile}
+            isMenuOpened={isMenuOpened}
+            onLogout={onLogout}
+          />
+        </>
+      )}
 
-        {!isMobile && (
-          <>
-            <img
-              className="header__logo"
-              src={logoPath}
-              alt="Логотип Место Россия"
-            />
-            <div className="header__menu">
-              <span className="header__auth-email">{authUser.email}</span>
-              <AuthButton isMobile={isMobile} onLogout={onLogout} />
-            </div>
-          </>
-        )}
-      </header>
-    </>
+      {!isMobile && (
+        <>
+          <Logo />
+          <Menu
+            isMobile={isMobile}
+            isMenuOpened={isMenuOpened}
+            onLogout={onLogout}
+          />
+        </>
+      )}
+
+    </header>
   );
 }
 

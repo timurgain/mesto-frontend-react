@@ -5,6 +5,7 @@
 @import url(./blocks/root/root.css);
 
 @import url(./blocks/header/header.css);
+@import url(./blocks/header/_type/header_type_mobile-menu.css);
 @import url(./blocks/header/__logo/header__logo.css);
 @import url(./blocks/header/__auth-email/header__auth-email.css);
 @import url(./blocks/header/__auth-btn/header__auth-btn.css);
