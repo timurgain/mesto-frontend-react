@@ -35,7 +35,7 @@ function Register() {
         onSubmit={handleRegister}
       />
       <p className="auth__footnote">
-        Уже зарегистрированы? <Link to="/sign-in">Войти</Link>
+        Уже зарегистрированы? <Link className="link" to="/sign-in">Войти</Link>
       </p>
       <InfoTooltip
         isOpen={isPopupOpen}

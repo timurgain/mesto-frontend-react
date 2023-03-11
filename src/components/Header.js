@@ -15,14 +15,14 @@ function Header({ onLogout, ...props }) {
       {loggedIn && <span className="header__auth-email">{authUser.email}</span>}
 
       {loggedIn && location.pathname === "/" && (
-        <button className="header__auth-btn" type="button" onClick={onLogout}>
+        <button className="header__auth-btn link" type="button" onClick={onLogout}>
           Выйти
         </button>
       )}
 
       {!loggedIn && location.pathname === "/sign-up" && (
         <button
-          className="header__auth-btn"
+          className="header__auth-btn link"
           type="button"
           onClick={() => navigate("/sign-in")}
         >
@@ -32,7 +32,7 @@ function Header({ onLogout, ...props }) {
 
       {!loggedIn && location.pathname === "/sign-in" && (
         <button
-          className="header__auth-btn"
+          className="header__auth-btn link"
           type="button"
           onClick={() => navigate("/sign-up")}
         >

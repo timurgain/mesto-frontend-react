@@ -7,3 +7,12 @@
   line-height: 1.2;
   color: rgba(255, 255, 255, 1);
 }
+
+
+@media screen and (max-width: 767px) {
+
+  .header__auth-email {
+    
+  }
+
+}

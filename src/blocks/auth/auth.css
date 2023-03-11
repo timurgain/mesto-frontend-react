@@ -5,4 +5,5 @@
   justify-content: flex-start;
   row-gap: 50px;
   align-items: center;
+  max-width: 100%;
 }

@@ -8,3 +8,12 @@
   line-height: 1.2;
   color: #FFFFFF;
 }
+
+
+@media screen and (max-width: 767px) {
+
+  .auth__header {
+    font-size: 20px;
+  }
+
+}

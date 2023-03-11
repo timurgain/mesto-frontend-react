@@ -73,3 +73,5 @@
 
 @import url(./blocks/footer/footer.css);
 @import url(./blocks/footer/__paragraph/footer__paragraph.css);
+
+@import url(./blocks/link/link.css);
