@@ -1,18 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import successIconPath from "../images/success_icon.svg";
 import failIconPath from "../images/fail_icon.svg";
 
 
 function InfoTooltip({ isOpen, isSuccessful, onClose, ...props }) {
-
-  const navigate = useNavigate();
-
-  React.useEffect(() => {
-    if (isSuccessful && !isOpen) {
-      navigate('/sign-in', {replace: true});
-    }
-  }, [isOpen, isSuccessful, navigate])
 
   function getIconPath() {
     if (isSuccessful) return successIconPath;

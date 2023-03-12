@@ -8,8 +8,6 @@ function AddPlacePopup({ isOpen, onAddPlace, onClose, ...props }) {
     useFormAndValidation({ name: "", link: "" });
 
   React.useEffect(() => {
-    // back to initial state
-    setSaveBtnText("Создать");
     resetForm({ name: "", link: "" });
   }, [isOpen, resetForm]);
 
@@ -17,8 +15,8 @@ function AddPlacePopup({ isOpen, onAddPlace, onClose, ...props }) {
     evt.preventDefault();
     setSaveBtnText("Сохраняю...");
 
-    // forwards the data
-    onAddPlace(values);
+    // forwards the data and func to change the text in btn
+    onAddPlace(values, () => setSaveBtnText("Создать"));
   }
 
   return (

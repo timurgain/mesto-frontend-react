@@ -8,8 +8,6 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, ...props }) {
     useFormAndValidation({ link: "" });
 
   React.useEffect(() => {
-    // back to initial state
-    setSaveBtnText("Сохранить");
     resetForm({ link: "" });
   }, [isOpen, resetForm]);
 
@@ -17,7 +15,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, ...props }) {
     evt.preventDefault();
     setSaveBtnText("Сохраняю...");
     // forwards the data
-    onUpdateAvatar(values);
+    onUpdateAvatar(values, () => setSaveBtnText("Сохранить"));
   }
 
   return (

@@ -7,10 +7,11 @@ import PopupWithForm from "./PopupWithForm.js";
 import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
 import AddPlacePopup from "./AddPlacePopup.js";
+import InfoTooltip from "./InfoTooltip.js";
 import ImagePopup from "./ImagePopup.js";
 import api from "../utils/api.js";
 import ProtectedRoute from "./ProtectedRoute.js";
-import * as auth from "./AuthUtils.js";
+import * as auth from "../utils/apiAuth.js";
 import {
   CurrentUserContext,
   defaultUser,
@@ -26,6 +27,10 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 function App() {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = React.useState(false);
+
+  const [isTooltipSuccessful, setIsTooltipSuccessful] = React.useState(null);
+  const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
+
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
@@ -33,6 +38,7 @@ function App() {
     React.useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = React.useState(false);
+
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState(defaultUser);
   const [authUser, setAuthUser] = React.useState({ email: "" });
@@ -43,13 +49,14 @@ function App() {
     isAddPlacePopupOpen ||
     isEditAvatarPopupOpen ||
     isConfirmPopupOpen ||
-    isImagePopupOpen;
+    isImagePopupOpen ||
+    isTooltipOpen;
 
   const { escClose, clickClose } = usePopupClosing(isPopupOpen, closeAllPopups);
   React.useEffect(escClose, [isPopupOpen, escClose]);
 
   React.useEffect(() => {
-    // API, get currentUser and cards according to edu task
+    // API gets currentUser and cards according to edu task
     Promise.all([api.getUserMe(), api.getCards()])
       .then(([userData, cardsData]) => {
         setCurrentUser(userData);
@@ -57,7 +64,7 @@ function App() {
       })
       .catch(reportError);
 
-    // another API, check authUser token according to edu task
+    // another API checks authUser token according to edu task
     const token = localStorage.getItem("token");
     if (token) {
       auth
@@ -80,6 +87,7 @@ function App() {
     setIsImagePopupOpen(false);
     setIsConfirmPopupOpen(false);
     setSelectedCard(null);
+    setIsTooltipOpen(false);
   }
 
   function handleEditAvatarClick() {
@@ -138,34 +146,54 @@ function App() {
     );
   }
 
-  function handleUpdateUser({ name, about }) {
+  function handleUpdateUser({ name, about }, setInitialBtnText) {
     api
       .patchUserMe(name, about)
       .then((updUser) => {
         setCurrentUser(updUser);
         closeAllPopups();
       })
-      .catch(reportError);
+      .catch(reportError)
+      .finally(setInitialBtnText);
   }
 
-  function handleUpdateAvatar({ link }) {
+  function handleUpdateAvatar({ link }, setInitialBtnText) {
     api
       .patchUserMeAvatar(link)
       .then((updUser) => {
         setCurrentUser(updUser);
         closeAllPopups();
       })
-      .catch(reportError);
+      .catch(reportError)
+      .finally(setInitialBtnText);
   }
 
-  function handleAddPlaceSubmit({ link, name }) {
+  function handleAddPlaceSubmit({ link, name }, setInitialBtnText) {
     api
       .postCard(link, name)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .catch(reportError);
+      .catch(reportError)
+      .finally(setInitialBtnText);
+  }
+
+
+  // Auth
+
+  function handleRegister(email, password) {
+    auth
+      .register(email, password)
+      .then(() => {
+        navigate('/sign-in', {replace: true});
+        setIsTooltipSuccessful(true);
+      })
+      .catch((err) => {
+        reportError(err);
+        setIsTooltipSuccessful(false);
+      })
+      .finally(() => setIsTooltipOpen(true));
   }
 
   function handleLogin() {
@@ -173,10 +201,10 @@ function App() {
   }
 
   function handleLogout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setLoggedIn(false);
     setAuthUser({ email: "" });
-    navigate('/sign-in', {replace: true});
+    navigate("/sign-in", { replace: true });
   }
 
   return (
@@ -185,8 +213,10 @@ function App() {
         <Header onLogout={handleLogout} />
 
         <Routes>
-
-          <Route path="/sign-up" element={<Register />} />
+          <Route
+            path="/sign-up"
+            element={<Register onRegister={handleRegister} />}
+          />
           <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
           <Route element={<ProtectedRoute />}>
             <Route
@@ -204,7 +234,6 @@ function App() {
               }
             />
           </Route>
-
         </Routes>
 
         <EditProfilePopup
@@ -228,6 +257,12 @@ function App() {
         <ImagePopup
           isOpen={isImagePopupOpen}
           card={selectedCard}
+          onClose={clickClose}
+        />
+
+        <InfoTooltip
+          isOpen={isTooltipOpen}
+          isSuccessful={isTooltipSuccessful}
           onClose={clickClose}
         />
 

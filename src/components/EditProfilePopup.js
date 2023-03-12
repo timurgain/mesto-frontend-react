@@ -11,8 +11,6 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, ...props }) {
     useFormAndValidation({ name: currentUser.name, about: currentUser.about });
 
   React.useEffect(() => {
-    // back to initial state
-    setSaveBtnText("Сохранить");
     resetForm({ name: currentUser.name, about: currentUser.about });
   }, [currentUser, isOpen, resetForm]);
 
@@ -20,7 +18,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, ...props }) {
     evt.preventDefault();
     setSaveBtnText("Сохраняю...");
     // forwards the data
-    onUpdateUser(values);
+    onUpdateUser(values, () => setSaveBtnText("Сохранить"));
   }
 
   return (
