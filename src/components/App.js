@@ -66,7 +66,7 @@ function App() {
 
     // another API checks authUser token according to edu task
     const token = localStorage.getItem("token");
-    if (token) {
+    if (loggedIn && token) {
       auth
         .authorize(token)
         .then((data) => {
@@ -78,7 +78,7 @@ function App() {
         })
         .catch(reportError);
     }
-  }, [navigate]);
+  }, [navigate, loggedIn]);
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
@@ -179,14 +179,13 @@ function App() {
       .finally(setInitialBtnText);
   }
 
-
   // Auth
 
   function handleRegister(email, password) {
     auth
       .register(email, password)
       .then(() => {
-        navigate('/sign-in', {replace: true});
+        navigate("/sign-in", { replace: true });
         setIsTooltipSuccessful(true);
       })
       .catch((err) => {
@@ -196,8 +195,17 @@ function App() {
       .finally(() => setIsTooltipOpen(true));
   }
 
-  function handleLogin() {
-    setLoggedIn(true);
+  function handleLogin(email, password) {
+    auth
+      .login(email, password)
+      .then((data) => {
+        if (!data.token)
+          throw new Error("There is no token from the server while login");
+        localStorage.setItem("token", data.token);
+        setLoggedIn(true);
+        navigate("/", { replace: true });
+      })
+      .catch(reportError);
   }
 
   function handleLogout() {

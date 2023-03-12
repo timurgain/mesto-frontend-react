@@ -1,5 +1,6 @@
 const BASE_AUTH_URL = "https://auth.nomoreparties.co";
 
+// register - create user
 function register(email, password) {
   const options = {
     method: "POST",
@@ -14,6 +15,7 @@ function register(email, password) {
   return fetch(`${BASE_AUTH_URL}/signup`, options).then(convertResponseToJson);
 }
 
+// login - get token
 function login(email, password) {
   const options = {
     method: "POST",
@@ -28,6 +30,7 @@ function login(email, password) {
   return fetch(`${BASE_AUTH_URL}/signin`, options).then(convertResponseToJson);
 }
 
+// authorize - check token
 function authorize(token) {
   const options = {
     method: "GET",

@@ -15,6 +15,7 @@ class Api {
   // User
   getUserMe() {
     this._options.method = 'GET';
+    if (this._options.body) delete this._options.body;
     return this._request(`${this._baseUrl}/users/me`)
   }
 
@@ -38,6 +39,7 @@ class Api {
   // Cards
   getCards() {
     this._options.method = 'GET';
+    if (this._options.body) delete this._options.body;
     return this._request(`${this._baseUrl}/cards`)
   }
 
