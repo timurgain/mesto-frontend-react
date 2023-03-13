@@ -66,7 +66,7 @@ function App() {
 
     // another API checks authUser token according to edu task
     const token = localStorage.getItem("token");
-    if (loggedIn && token) {
+    if (token) {
       auth
         .authorize(token)
         .then((data) => {
@@ -78,7 +78,7 @@ function App() {
         })
         .catch(reportError);
     }
-  }, [navigate, loggedIn]);
+  }, [navigate]);
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
