@@ -57,12 +57,14 @@ function App() {
 
   React.useEffect(() => {
     // API gets currentUser and cards according to edu task
-    Promise.all([api.getUserMe(), api.getCards()])
-      .then(([userData, cardsData]) => {
-        setCurrentUser(userData);
-        setCards(cardsData);
-      })
-      .catch(reportError);
+    if (loggedIn) {
+      Promise.all([api.getUserMe(), api.getCards()])
+        .then(([userData, cardsData]) => {
+          setCurrentUser(userData);
+          setCards(cardsData);
+        })
+        .catch(reportError);
+    }
 
     // another API checks authUser token according to edu task
     const token = localStorage.getItem("token");
@@ -78,7 +80,7 @@ function App() {
         })
         .catch(reportError);
     }
-  }, [navigate]);
+  }, [navigate, loggedIn]);
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
@@ -205,7 +207,11 @@ function App() {
         setLoggedIn(true);
         navigate("/", { replace: true });
       })
-      .catch(reportError);
+      .catch((err) => {
+        reportError(err);
+        setIsTooltipSuccessful(false);
+        setIsTooltipOpen(true);
+      });
   }
 
   function handleLogout() {
